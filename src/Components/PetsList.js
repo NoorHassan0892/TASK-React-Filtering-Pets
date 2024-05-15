@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import pets from "../petsData";
 import PetItem from "./PetItem";
 
@@ -16,8 +16,18 @@ function PetsList() {
       return false;
     }
   });
+  const [type, setType] = useState("");
 
-  const petList = filterpets.map((pet) => <PetItem pet={pet} key={pet.id} />);
+  const handleChange1 = (e) => {
+    setType(e.target.value);
+  };
+  const filtertype = filterpets.filter((pettype) => {
+    if (pettype.type.includes(type)) {
+      return true;
+    }
+  });
+
+  const petList = filtertype.map((pet) => <PetItem pet={pet} key={pet.id} />);
 
   return (
     <section id="doctors" className="doctor-section pt-140">
@@ -40,7 +50,7 @@ function PetsList() {
               </div>
               <br />
               Type:
-              <select className="form-select">
+              <select className="form-select" onChange={handleChange1}>
                 <option value="" selected>
                   All
                 </option>
